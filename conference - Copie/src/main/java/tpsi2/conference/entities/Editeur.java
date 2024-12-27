@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -22,8 +22,8 @@ public class Editeur {
 
 
     @OneToMany(cascade=CascadeType.ALL,mappedBy =("editeur"))
-    @JsonManagedReference
-    private Collection<Conference> conferences;
+    @JsonManagedReference //pour éviter la récursivité infinie (la mort)
+    private List<Conference> listconferences;
 
     public void addConference(Conference conference) {
         this.conferences.add(conference);
