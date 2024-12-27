@@ -53,5 +53,10 @@ public class EditeurController {
 
     }
 
+     @GetMapping(path= "{id}/conferences")
+    public List<Conference> getEditeurConferences(@PathVariable("id") Long id){
+        return editeurService.getEditeurConferences(id);
+    }
+
 
 }
