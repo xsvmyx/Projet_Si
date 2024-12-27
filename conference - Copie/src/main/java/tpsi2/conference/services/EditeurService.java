@@ -68,5 +68,20 @@ public class EditeurService {
         return e.getListconferences();
 
     }
+    
+    public void supprimerConference(Long id, Long idc){
+
+        Editeur e = editeurRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("Editeur n'existe pas"));
+
+        Conference c = conferenceRepository.findById(idc)
+                .orElseThrow(() -> new IllegalStateException("Conference n'existe pas"));
+
+        e.getListconferences().remove(c);
+
+        editeurRepository.save(e);
+        conferenceRepository.delete(c);
+
+    }
 
 }
