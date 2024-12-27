@@ -59,4 +59,8 @@ public class EditeurController {
     }
 
 
+    @DeleteMapping(path= "{id}/{idc}")
+    public void supprimerConference(@PathVariable Long id,@PathVariable Long idc){
+        editeurService.supprimerConference(id,idc);
+    }
 }
