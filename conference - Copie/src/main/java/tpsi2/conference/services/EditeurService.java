@@ -62,5 +62,11 @@ public class EditeurService {
         conferenceRepository.save(c);
     }
 
+    public List<Conference> getEditeurConferences(Long id){
+        Editeur e = editeurRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("Editeur n'existe pas"));
+        return e.getListconferences();
+
+    }
 
 }
