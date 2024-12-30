@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import tpsi2.conference.entities.*;
 import tpsi2.conference.repositories.RoleRepository;
 import tpsi2.conference.repositories.UserRepository;
@@ -20,6 +21,8 @@ public class ConferenceApplication implements CommandLineRunner {
 
 	@Autowired
 	private UserService userService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ConferenceApplication.class, args);
@@ -33,10 +36,11 @@ public class ConferenceApplication implements CommandLineRunner {
 		createRoleIfNotExists("Evaluateur");
 
 		// Création des utilisateurs
-		UserApp user = new UserApp(2, "Salim", "123");
+		UserApp user = new UserApp( "Salim", passwordEncoder.encode("123"));
 		userRepository.save(user);
+		System.out.println("voila le mdp :"+user.getPassword());
 
-		UserApp user2 = new UserApp(3, "Bob", "123");
+		UserApp user2 = new UserApp("Bob", "123");
 		userRepository.save(user2);
 
 		// Attribution du rôle à un utilisateur
