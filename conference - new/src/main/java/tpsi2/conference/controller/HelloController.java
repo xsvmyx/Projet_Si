@@ -10,4 +10,11 @@ public class HelloController {
     public String hello() {
         return "Hello this is public to everyone";
     }
+
+    @GetMapping("/secured")
+    public String secured(){
+        return "if you seen this ,you're logged in";
+    }
+
+
 }
