@@ -14,15 +14,7 @@ import lombok.Setter;
 @Setter
 public class Conference {
     @Id
-    @GeneratedValue(strategy =  GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String titre;
-
-
-    @ManyToOne
-    @JsonBackReference
-    Editeur editeur;
-
-
-   public Conference(String t,Editeur e){titre=t;editeur=e;}
 }
