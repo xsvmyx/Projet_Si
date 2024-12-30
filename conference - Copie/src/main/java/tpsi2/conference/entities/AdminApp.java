@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @Data
@@ -14,5 +13,9 @@ import lombok.*;
 public class AdminApp extends Role {
     private String infos;
 
+    public AdminApp(){
+        super();
+        this.setRoleName("Admin");
+    }
 
 }

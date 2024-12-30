@@ -11,11 +11,12 @@ import lombok.*;
 @Data
 //@Data sert a avoir le toString pour faire des verifications
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "RoleSpe")
+@DiscriminatorColumn(name = "role")
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true, nullable = false)
     private String roleName;
 }

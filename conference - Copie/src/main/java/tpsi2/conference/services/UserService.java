@@ -1,5 +1,6 @@
 package tpsi2.conference.services;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tpsi2.conference.entities.Role;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UserService {
 
     UserRepository userRepository;
@@ -27,8 +29,19 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void addRoleToUser(String username, Role role) {
-        userRepository.findByUsername(username).getRoles().add(role);
+    public void addRoleToUser(String username, String roleName) {
+        UserApp user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new RuntimeException("Aucun utilisateur: " + username);
+        }
+
+        Role role = roleRepository.findByRoleName(roleName);
+        if (role == null) {
+            throw new RuntimeException("Role introuvable: " + roleName);
+        }
+
+        user.getRoles().add(role);
+        userRepository.save(user);
     }
     public List<UserApp> getAll() {
         return userRepository.findAll();

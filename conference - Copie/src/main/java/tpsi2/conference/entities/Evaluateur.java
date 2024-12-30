@@ -11,10 +11,14 @@ import java.util.List;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @DiscriminatorValue("Evaluateur")
 public class Evaluateur extends Role {
     String infos;
+
+    public Evaluateur() {
+        super();
+        this.setRoleName("Evaluateur");
+    }
 }

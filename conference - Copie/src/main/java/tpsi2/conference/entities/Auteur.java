@@ -10,12 +10,16 @@ import java.util.Collection;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @DiscriminatorValue("Auteur")
 public class Auteur extends Role{
     private String infos;
+
+    public Auteur() {
+        super();
+        this.setRoleName("Auteur");
+    }
 
 
 }
