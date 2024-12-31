@@ -1,8 +1,8 @@
-package tpsi2.conference.repositories;
+package tpsi2.conference.Repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import tpsi2.conference.entities.Role;
+import tpsi2.conference.Entities.Role;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Long> {

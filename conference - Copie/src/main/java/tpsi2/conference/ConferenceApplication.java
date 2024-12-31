@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import tpsi2.conference.entities.*;
-import tpsi2.conference.repositories.RoleRepository;
-import tpsi2.conference.repositories.UserRepository;
-import tpsi2.conference.services.UserService;
+import tpsi2.conference.Entities.*;
+import tpsi2.conference.Repositories.RoleRepository;
+import tpsi2.conference.Repositories.UserRepository;
+import tpsi2.conference.Services.UserService;
 
 @SpringBootApplication
 public class ConferenceApplication implements CommandLineRunner {

@@ -1,7 +1,7 @@
-package tpsi2.conference.repositories;
+package tpsi2.conference.Repositories;
 
 import org.springframework.data.repository.CrudRepository;
-import tpsi2.conference.entities.UserApp;
+import tpsi2.conference.Entities.UserApp;
 
 import java.util.List;
 

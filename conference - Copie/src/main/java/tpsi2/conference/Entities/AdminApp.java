@@ -1,4 +1,4 @@
-package tpsi2.conference.entities;
+package tpsi2.conference.Entities;
 
 import jakarta.persistence.*;
 import lombok.*;

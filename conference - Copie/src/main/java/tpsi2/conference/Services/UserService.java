@@ -1,12 +1,12 @@
-package tpsi2.conference.services;
+package tpsi2.conference.Services;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import tpsi2.conference.entities.Role;
-import tpsi2.conference.entities.UserApp;
-import tpsi2.conference.repositories.RoleRepository;
-import tpsi2.conference.repositories.UserRepository;
+import tpsi2.conference.Entities.Role;
+import tpsi2.conference.Entities.UserApp;
+import tpsi2.conference.Repositories.RoleRepository;
+import tpsi2.conference.Repositories.UserRepository;
 
 import java.util.List;
 import java.util.Optional;
