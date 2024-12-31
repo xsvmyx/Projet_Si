@@ -5,10 +5,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.ResponseEntity;
-import tpsi2.conference.entities.User;
-import tpsi2.conference.repositories.UserRepository;
-
-import java.util.List;
+import tpsi2.conference.Entities.User;
+import tpsi2.conference.Repositories.UserRepository;
 
 
 @SpringBootApplication
