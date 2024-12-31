@@ -12,8 +12,10 @@ import tpsi2.conference.config.JwtIssuer;
 import tpsi2.conference.entities.User;
 import tpsi2.conference.model.LoginRequest;
 import tpsi2.conference.model.LoginResponse;
+import tpsi2.conference.model.RegisterRequest;
 import tpsi2.conference.repositories.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -26,13 +28,13 @@ public class AuthController {
 //envoyer les données du user dans jwt.issue()
 
     @PostMapping("/auth/register")
-    public ResponseEntity<?> registerUSer(@RequestBody User user){
-        if(userRepository.findByUsername(user.getUsername()) != null){
+    public ResponseEntity<?> registerUSer(@RequestBody RegisterRequest r){
+        if(userRepository.findByUsername(r.getUsername()) != null){
             return ResponseEntity.badRequest().body("Username existe déjà");
         }
        // user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setPassword(user.getPassword());
-        user.setRole(user.getRole());
+        User user = new User(r.getUsername(),r.getPassword());
+
         return ResponseEntity.ok(userRepository.save(user));
     }
 
@@ -43,14 +45,11 @@ public class AuthController {
         User u = userRepository.findByUsername(request.getUsername());
         if(u!= null && u.getPassword().equals(request.getPassword())){
 
-            var token = jwtIssuer.issue(u.getId(),u.getUsername(), List.of(u.getRole()));
 
-
+            var token = jwtIssuer.issue(u.getId(), u.getUsername(), List.of(u.getRole()));
 
             return ResponseEntity.ok("Connexion réussie pour l'utilisateur : " + LoginResponse.builder().accessToken(token).build().getAccessToken());
         }
-
-
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Nom d'utilisateur ou mot de passe incorrect");
     }//le builder joue le role du constructeur
