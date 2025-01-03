@@ -1,7 +1,10 @@
 package tpsi2.conference.repositories;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import tpsi2.conference.entities.Soumission;
-import org.springframework.data.repository.CrudRepository;
 
-public interface SoumissionRepository extends CrudRepository <Soumission,Long> {
-
+@Repository
+public interface SoumissionRepository extends JpaRepository<Soumission, Long> {
+    Soumission findByIdAndNom(long id,String nom);
 }

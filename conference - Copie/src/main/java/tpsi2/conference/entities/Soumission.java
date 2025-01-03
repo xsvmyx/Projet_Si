@@ -1,33 +1,42 @@
 package tpsi2.conference.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor
+
 @Getter
 @Setter
 
-public class Soumission{
-    @Id
-    @GeneratedValue(strategy =  GenerationType.AUTO)
-    private int id;
-    private String nom;
-    private String description;
+public class Soumission {
 
+    @Id
+    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String nom;
+
+    @ManyToMany
+    private Set<Utilisateur> auteurs;
 
     @ManyToOne
-    private Auteur auteur;
+    @JsonManagedReference
+    private Conference conference;
 
-    public Soumission(String nom, String description, Auteur auteur ) {
-        this.nom = nom;
-        this.description = description;
-        this.auteur = auteur;
+    @OneToMany
+    private Set<Utilisateur> evaluateurs;
+
+    public Soumission(){
+        this.auteurs = new HashSet<>();
+        this.evaluateurs = new HashSet<>();
     }
 
 
-}
+
+    }

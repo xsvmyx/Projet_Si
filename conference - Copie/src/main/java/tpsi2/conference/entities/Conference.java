@@ -2,27 +2,30 @@ package tpsi2.conference.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import tpsi2.conference.enumeration.EtatConference;
+
+import java.util.Set;
 
 @Entity
+@Data
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-public class Conference {
+
+public class Conference  {
     @Id
-    @GeneratedValue(strategy =  GenerationType.AUTO)
-    private int id;
-    private String titre;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
+    private EtatConference etat;
 
-
-    @ManyToOne
+    @OneToMany(mappedBy = "conference", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
-    Editeur editeur;
+    private Set<UserConferenceRole> userConferenceRoles;
 
-
-   public Conference(String t,Editeur e){titre=t;editeur=e;}
+    @OneToMany
+    @JsonBackReference
+    private Set<Soumission> soumissions;
 }
