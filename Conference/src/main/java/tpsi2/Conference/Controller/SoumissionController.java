@@ -16,13 +16,27 @@ public class SoumissionController {
     private final SoumissionService soumissionService;
     private final UtilisateurService utilisateurService;
 
-    @PostMapping ("{conference}/soumission")
+    @PostMapping("{conference}/soumission")
     @PreAuthorize("@utilisateurService.hasThisRole('AUTEUR')")
-    public ResponseEntity<?> addSoumission (
+    public ResponseEntity<?> addSoumission(
             @PathVariable("conference") Long conference
             , @RequestBody SoumissionModele soumissionModele
     ) {
         return ResponseEntity.ok(soumissionService.createSoumission(soumissionModele, conference));
 
     }
+
+/*
+    @PostMapping ("{conferenceID}/{soumissionID}/{username}")
+    @PreAuthorize("@utilisateurService.hasThisRole('AUTEUR')")
+    public ResponseEntity<?> addAuteurToSoumission (
+            @RequestBody Long conferenceID
+            , @RequestBody Long soumissionID,
+            @RequestBody String username
+    ) {
+        return ResponseEntity.ok(soumissionService.appendAuteur(soumissionID, username));
+
+    }
+
+ */
 }

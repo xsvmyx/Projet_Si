@@ -30,57 +30,82 @@ public class SoumissionService {
     private final UtilisateurService utilisateurService;
 
 
+    public ResponseEntity<?> createSoumission(SoumissionModele soumissionModele, Long conferenceId) {
+
+        Conference conference = conferenceService.getConference(conferenceId);
+
+        if (conference != null) {
+
+            //on verifie si la conference est ouverte
+            if (conference.getEtat().equals(EtatConference.OUVERTE)) {
+
+                Utilisateur auteur;
+                //on recupere l'utilisateur du contexte
+                Optional<Utilisateur> utilisateur = utilisateurService.getUserFromContext();
+
+                //creation de la soumission
+                Soumission soumission = new Soumission();
+                soumission.setNom(soumissionModele.getNom());
+                soumission.setConference(conference);
+
+                //Ajout de l'auteur principal
+                soumission.getAuteurs().add(utilisateur.get());
+
+                //Ajout des auteurs
+                for (String username : soumissionModele.getAuteursUsername()) {
+                    auteur = utilisateurService.getUtilisateurByUsername(username);
+                    if (auteur == null) {
+                        return ResponseEntity.notFound().build();
+                    }
+                    soumission.getAuteurs().add(auteur);
+                }
+
+                soumissionRepository.save(soumission);
+                //on rajoute la soumission dans le set de soumission de la conférence
+                conference.getSoumissions().add(soumission);
+
+                //on recupere le tuple qui contient le user courant ayant comme role 'AUTEUR' et link dans aucune conference
+                UserConferenceRole userConferenceRole = userConferenceRoleRepository.findByUserAndRoleAndConference(utilisateur, "AUTEUR"
+                        , Optional.empty());
+
+                //on link la conference et on save
+                userConferenceRole.setConference(conference);
+                userConferenceRoleRepository.save(userConferenceRole);
 
 
-   public ResponseEntity<?> createSoumission(SoumissionModele soumissionModele,Long conferenceId) {
+                return ResponseEntity.ok().body("all good");
+            }
 
-       Conference conference = conferenceService.getConference(conferenceId);
+            return ResponseEntity.badRequest().body("conference fermée");
+        }
 
-       if(conference != null) {
-
-           //on verifie si la conference est ouverte
-           if(conference.getEtat().equals(EtatConference.OUVERTE)) {
-               //on recupere l'utilisateur du contexte
-               Optional<Utilisateur> utilisateur = utilisateurService.getUserFromContext();
-
-               //creation de la soumission
-               Soumission soumission = new Soumission();
-               soumission.setNom(soumissionModele.getNom());
-               soumission.setConference(conference);
-               soumission.getAuteurs().add(utilisateur.get());
-               soumissionRepository.save(soumission);
-
-               //on rajoute la soumission dans le set de soumission de la conférence
-               conference.getSoumissions().add(soumission);
-
-               //on recupere le tuple qui contient le user courant ayant comme role 'AUTEUR' et link dans aucune conference
-               UserConferenceRole userConferenceRole = userConferenceRoleRepository.findByUserAndRoleAndConference(utilisateur, "AUTEUR"
-                       , Optional.empty());
-
-               //on link la conference et on save
-               userConferenceRole.setConference(conference);
-               userConferenceRoleRepository.save(userConferenceRole);
-
-
-               return ResponseEntity.ok().body("all good");
-           }
-           return ResponseEntity.badRequest().body("conference fermée");
-       }
-
-       return ResponseEntity.notFound().build();
+        return ResponseEntity.notFound().build();
 
     }
 
+
     public Soumission findSoumissionById(Long id) {
-       return soumissionRepository.findById(id).orElse(null);
+        return soumissionRepository.findById(id).orElse(null);
     }
 
     public ResponseEntity<?> checkSoumission(Long conferenceId) {
-       Optional<Soumission> soumission = soumissionRepository.findById(conferenceId);
-               if(soumission.isPresent()) {
-                   return ResponseEntity.ok().body("conference exist");
-               }
-               return ResponseEntity.notFound().build();
+        Optional<Soumission> soumission = soumissionRepository.findById(conferenceId);
+        if (soumission.isPresent()) {
+            return ResponseEntity.ok().body("conference exist");
+        }
+        return ResponseEntity.notFound().build();
     }
 
+    public ResponseEntity<?> appendAuteur(Long SoumissionId, String username) {
+        //pas besoin de verfier la conference car l'auteur bis ne doit pas forcement etre dans la meme conference
+        Utilisateur auteur = utilisateurService.getUtilisateurByUsername(username);
+        if (auteur != null) {
+            Optional<Soumission> soumission = soumissionRepository.findById(SoumissionId);
+            if (soumission.isPresent()) {
+                soumission.get().getAuteurs().add(auteur);
+                return ResponseEntity.ok().body("Auteur ajouté");
+            }
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
