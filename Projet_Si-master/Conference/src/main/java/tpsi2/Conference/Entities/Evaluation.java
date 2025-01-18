@@ -30,6 +30,10 @@ public class Evaluation  {
     @JsonManagedReference
     private Utilisateur evaluateur;
 
+    //ajout de la conference de l'evaluation pour faciliter la recherche
+    @ManyToOne
+    private Conference conference;
+
 
 
 }

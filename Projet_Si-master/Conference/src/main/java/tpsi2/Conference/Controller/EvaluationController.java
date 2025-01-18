@@ -9,14 +9,14 @@ import tpsi2.Conference.Service.EvaluationService;
 import tpsi2.Conference.Service.UtilisateurService;
 
 @RestController
-@RequestMapping ("/api/conference")
+@RequestMapping("/api/conference")
 @AllArgsConstructor
 public class EvaluationController {
 
     private final EvaluationService evaluationService;
     private final UtilisateurService utilisateurService;
 
-    @PostMapping ("soumission/{soumissionId}")
+    @PostMapping("soumission/{soumissionId}")
     @PreAuthorize("@utilisateurService.canEvaluateSoumission(#soumissionId)")
     public ResponseEntity<?> addEvaluation (
             @RequestBody EvaluationModele evaluationModele
@@ -24,6 +24,16 @@ public class EvaluationController {
 
     ) {
         return ResponseEntity.ok(evaluationService.createEvaluation(soumissionId, evaluationModele));
+
+    }
+//ajout d'evaluation consulter Merwane demain + Essayer de faire une meilleur implementation
+    @PostMapping ("{conferenceID}/evaluations")
+    @PreAuthorize("@utilisateurService.hasRoleInConference(#conferenceID,'EDITEUR')")
+    public ResponseEntity<?> checkEvaluations (
+            @PathVariable Long conferenceID
+
+    ) {
+        return ResponseEntity.ok(evaluationService.findEvaluationByConferenceId(conferenceID));
 
     }
 }
